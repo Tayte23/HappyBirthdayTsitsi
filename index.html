@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy Birthday Tsitsi 🎉</title>
+  <style>
+    :root{
+      --glass: rgba(255,255,255,0.16);
+      --glass-2: rgba(255,255,255,0.10);
+      --text: #ffffff;
+      --muted: rgba(255,255,255,0.85);
+      --shadow: 0 18px 50px rgba(0,0,0,0.35);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+    /* Fullscreen background image */
+    body{
+      background: url("tsitsi.jpg") center/cover no-repeat fixed;
+      color: var(--text);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Dark + warm overlay for readability */
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(1200px 700px at 20% 10%, rgba(255,215,0,0.20), transparent 55%),
+        radial-gradient(900px 600px at 80% 15%, rgba(255,105,180,0.18), transparent 55%),
+        linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+      z-index: 0;
+    }
+
+    /* Confetti dots */
+    .confetti{
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.9;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.25));
+    }
+    .dot{
+      position: absolute;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      animation: fall linear infinite;
+    }
+    @keyframes fall{
+      from { transform: translateY(-15vh) rotate(0deg); }
+      to   { transform: translateY(115vh) rotate(360deg); }
+    }
+
+    /* Layout */
+    .wrap{
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 28px 16px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .card{
+      width: min(880px, 92vw);
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--glass), var(--glass-2));
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.22);
+      padding: 26px 22px;
+    }
+
+    .topline{
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .badge{
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.10);
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+
+    .title{
+      margin: 10px 0 6px;
+      font-size: clamp(34px, 4.8vw, 58px);
+      line-height: 1.05;
+      letter-spacing: -0.8px;
+      text-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    }
+
+    .subtitle{
+      margin: 0 0 18px;
+      font-size: clamp(16px, 2.2vw, 19px);
+      color: var(--muted);
+      line-height: 1.5;
+      max-width: 70ch;
+    }
+
+    .message{
+      margin-top: 12px;
+      padding: 16px 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(0,0,0,0.16);
+      line-height: 1.65;
+      color: rgba(255,255,255,0.92);
+      font-size: clamp(15px, 2.1vw, 18px);
+    }
+
+    .from{
+      margin-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      color: rgba(255,255,255,0.88);
+    }
+
+    .signature{
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .btn{
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.28);
+      background: rgba(255,255,255,0.10);
+      color: white;
+      padding: 10px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 650;
+      transition: transform .12s ease, background .12s ease;
+      user-select: none;
+    }
+    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.16); }
+    .btn:active{ transform: translateY(0px); }
+
+    .footer{
+      margin-top: 14px;
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.70);
+    }
+
+    /* Small devices: reduce blur for performance */
+    @media (max-width: 520px){
+      .card{ backdrop-filter: blur(8px); }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Confetti layer -->
+  <div class="confetti" id="confetti"></div>
+
+  <main class="wrap">
+    <section class="card">
+      <div class="topline">
+        <div class="badge">🎂 Happy Birthday <span style="opacity:.9;">•</span> Tsitsi</div>
+        <button class="btn" id="toggleConfetti">Pause confetti</button>
+      </div>
+
+      <h1 class="title">To Tsitsi ✨</h1>
+
+      <p class="subtitle">
+        Today is all about celebrating you — your beauty, your heart, and the way you light up every room.
+      </p>
+
+      <div class="message">
+        Wishing you a day filled with love, laughter, and unforgettable moments.  
+        May this new year bring you big wins, peaceful days, and everything you’ve been praying for.
+        <br /><br />
+        Stay shining, stay blessed, and keep being you. 💛
+      </div>
+
+      <div class="from">
+        <div>
+          <div style="opacity:.8;">With love,</div>
+          <div class="signature">Tatenda</div>
+        </div>
+        <div class="footer">Made with ❤️ for Tsitsi’s birthday</div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Build confetti
+    const confetti = document.getElementById("confetti");
+    const colors = ["#FFD166", "#EF476F", "#06D6A0", "#118AB2", "#F78C6B", "#CDB4DB", "#FFAFCC", "#BDE0FE"];
+    const COUNT = 55;
+
+    function rand(min, max){ return Math.random() * (max - min) + min; }
+
+    for(let i=0;i<COUNT;i++){
+      const d = document.createElement("div");
+      d.className = "dot";
+      const size = rand(6, 14);
+      d.style.width = size + "px";
+      d.style.height = size + "px";
+      d.style.left = rand(0, 100) + "vw";
+      d.style.top = rand(-30, 0) + "vh";
+      d.style.background = colors[Math.floor(Math.random() * colors.length)];
+      d.style.animationDuration = rand(4.5, 10) + "s";
+      d.style.animationDelay = rand(0, 3) + "s";
+      d.style.opacity = rand(0.6, 1);
+      confetti.appendChild(d);
+    }
+
+    // Toggle confetti animation
+    let running = true;
+    const btn = document.getElementById("toggleConfetti");
+    btn.addEventListener("click", () => {
+      running = !running;
+      confetti.style.display = running ? "block" : "none";
+      btn.textContent = running ? "Pause confetti" : "Play confetti";
+    });
+  </script>
+</body>
+</html>
