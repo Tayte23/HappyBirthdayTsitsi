@@ -163,6 +163,65 @@
         grid-template-columns: 1fr; 
       }
 
+      /* Mobile order: title -> image -> text */
+      .content > div:first-child{
+        order: 1;
+      }
+
+      .portrait-wrap{
+        order: 2;
+        margin: 14px 0 18px;
+      }
+
+      .content > div:first-child .subtitle,
+      .content > div:first-child .message,
+      .content > div:first-child .from{
+        order: 3;
+      }
+
+      .portrait{ 
+        width: min(340px, 92vw); 
+        border-radius: 28px;
+        animation: mobileFade 700ms ease-out both;
+        will-change: transform, opacity;
+      }
+
+      .confetti-cta{
+        position: static;
+        transform: none;
+        width: 100%;
+        justify-content: center;
+        margin-top: 10px;
+      }
+    }
+
+      /* Put title above image on mobile */
+      .content > div:first-child{
+        order: 1;
+      }
+
+      .portrait-wrap{
+        order: 2;
+        margin-bottom: 16px;
+      }
+
+      .portrait{ 
+        width: min(340px, 92vw); 
+        margin-bottom: 8px;
+        border-radius: 28px; /* slightly rounder on phones */
+        animation: mobileFade 700ms ease-out both;
+        will-change: transform, opacity;
+      }
+
+      .confetti-cta{
+        position: static;
+        transform: none;
+        width: 100%;
+        justify-content: center;
+        margin-top: 10px;
+      }
+    }
+
       /* Mobile flow order:
          1) CTA (Try me + Pop confetti)
          2) Title
