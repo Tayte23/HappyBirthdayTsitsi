@@ -163,6 +163,47 @@
         grid-template-columns: 1fr; 
       }
 
+      /* Mobile flow order:
+         1) CTA (Try me + Pop confetti)
+         2) Title
+         3) Image
+         4) Text */
+
+      .topline{
+        margin-bottom: 18px; /* space after CTA */
+      }
+
+      .confetti-cta{
+        position: static;
+        transform: none;
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 22px; /* space before title */
+      }
+
+      .title{
+        margin-top: 0;
+      }
+
+      .portrait-wrap{
+        order: 2;
+        margin: 16px 0 20px;
+      }
+
+      .portrait{ 
+        width: min(340px, 92vw); 
+        margin-bottom: 0;
+        border-radius: 28px; /* slightly rounder on phones */
+        animation: mobileFade 700ms ease-out both;
+        will-change: transform, opacity;
+      }
+
+      @keyframes mobileFade{
+        from{ opacity: 0; transform: translateY(10px) scale(0.99); }
+        to{ opacity: 1; transform: translateY(0px) scale(1); }
+      }
+    }
+
       /* Move image directly under title on mobile */
       .portrait-wrap{
         order: -1;
