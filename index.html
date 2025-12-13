@@ -6,10 +6,18 @@
   <title>Happy Birthday Tsitsi 🎉</title>
   <style>
     :root{
+      /* Bouquet-inspired palette (reds, pinks, peach + leafy green) */
+      --red: #E53935;
+      --deep-red: #B71C1C;
+      --pink: #FF4D8D;
+      --rose: #FF7AAE;
+      --peach: #FFB07C;
+      --leaf: #2E7D32;
+
       --glass: rgba(255,255,255,0.16);
       --glass-2: rgba(255,255,255,0.10);
       --text: #ffffff;
-      --muted: rgba(255,255,255,0.85);
+      --muted: rgba(255,255,255,0.88);
       --shadow: 0 18px 50px rgba(0,0,0,0.35);
       --radius: 22px;
     }
@@ -19,7 +27,12 @@
 
     /* Fullscreen background image */
     body{
-      background: url("tsitsi.jpg") center/cover no-repeat fixed;
+      /* Layered background: flowers texture + main photo */
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.55)),
+        url("https://raw.githubusercontent.com/Tayte23/HappyBirthdayTsitsi/main/FLOWERS.JPG") center/cover no-repeat fixed,
+        url("tsitsi.jpg") center/cover no-repeat fixed;
+      background-blend-mode: overlay, multiply, normal;
       color: var(--text);
       overflow-x: hidden;
       position: relative;
@@ -30,31 +43,73 @@
       content:"";
       position: fixed;
       inset: 0;
+      /* Soft colour wash so flowers blend, not distract */
       background:
-        radial-gradient(1200px 700px at 20% 10%, rgba(255,215,0,0.20), transparent 55%),
-        radial-gradient(900px 600px at 80% 15%, rgba(255,105,180,0.18), transparent 55%),
-        linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+        radial-gradient(1000px 650px at 18% 12%, rgba(229,57,53,0.18), transparent 60%),
+        radial-gradient(900px 620px at 82% 14%, rgba(255,77,141,0.16), transparent 60%),
+        radial-gradient(850px 600px at 55% 78%, rgba(255,176,124,0.14), transparent 62%),
+        linear-gradient(to bottom, rgba(0,0,0,0.30), rgba(0,0,0,0.65));
       z-index: 0;
     }
 
-    /* Confetti dots */
+    /* Background confetti (continuous) */
+    .confetti-bg{
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0.45;
+      overflow: hidden;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.18));
+    }
+
+    .bg-dot{
+      position: absolute;
+      width: var(--s, 10px);
+      height: var(--s, 10px);
+      border-radius: 999px;
+      background: var(--c, #fff);
+      left: var(--x, 50vw);
+      top: var(--y, -10vh);
+      animation: fall var(--d, 10s) linear infinite;
+      opacity: var(--o, 0.8);
+      will-change: transform;
+    }
+
+    @keyframes fall{
+      from { transform: translateY(-15vh) translateX(0px) rotate(0deg); }
+      to   { transform: translateY(115vh) translateX(var(--drift, 0px)) rotate(360deg); }
+    }
+
+    /* Confetti burst layer (click) */
     .confetti{
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: 1;
-      opacity: 0.9;
+      z-index: 6;
+      overflow: hidden;
       filter: drop-shadow(0 6px 12px rgba(0,0,0,0.25));
     }
-    .dot{
+
+    .confetti-piece{
       position: absolute;
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      animation: fall linear infinite;
+      width: var(--s, 10px);
+      height: var(--s, 10px);
+      border-radius: var(--r, 999px);
+      background: var(--c, #fff);
+      left: var(--x, 50vw);
+      top: var(--y, 50vh);
+      transform: translate(-50%, -50%) scale(0.8) rotate(0deg);
+      opacity: 0;
+      animation: pop 1200ms cubic-bezier(.16,.84,.44,1) forwards;
+      will-change: transform, opacity;
     }
-    @keyframes fall{
-      from { transform: translateY(-15vh) rotate(0deg); }
-      to   { transform: translateY(115vh) rotate(360deg); }
+
+    @keyframes pop{
+      0%{ opacity: 0; transform: translate(-50%, -50%) scale(0.25) rotate(0deg); }
+      10%{ opacity: 1; }
+      60%{ opacity: 1; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1) rotate(260deg); }
+      100%{ opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy) + 140px)) scale(0.9) rotate(520deg); }
     }
 
     /* Layout */
@@ -68,7 +123,7 @@
     }
 
     .card{
-      width: min(880px, 92vw);
+      width: min(980px, 92vw);
       border-radius: var(--radius);
       background: linear-gradient(135deg, var(--glass), var(--glass-2));
       backdrop-filter: blur(10px);
@@ -78,13 +133,100 @@
       padding: 26px 22px;
     }
 
+    .content{
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .portrait-wrap{
+      display: grid;
+      place-items: center;
+    }
+
+    .portrait{
+      width: min(320px, 70vw);
+      height: auto;
+      border-radius: 18px;
+      filter: drop-shadow(0 18px 35px rgba(0,0,0,0.35));
+      margin-bottom: 14px;
+    }
+
+    .portrait-secondary{
+      width: min(260px, 60vw);
+      opacity: 0.95;
+    }
+
+    @media (max-width: 780px){
+      .content{ grid-template-columns: 1fr; }
+      .portrait{ width: min(320px, 82vw); }
+    }
+
     .topline{
       display: flex;
       gap: 12px;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       flex-wrap: wrap;
       margin-bottom: 10px;
+      position: relative;
+    }
+
+    /* Center the main tab + text */
+    .confetti-cta{
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    @media (max-width: 780px){
+      .confetti-cta{
+        position: static;
+        transform: none;
+        width: 100%;
+        justify-content: flex-start;
+        margin-top: 10px;
+      }
+    }
+
+    .hint{
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      color: rgba(255,255,255,0.92);
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(0,0,0,0.14);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      user-select: none;
+    }
+
+    .confetti-cta{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .hint{
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      color: rgba(255,255,255,0.92);
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(0,0,0,0.14);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      user-select: none;
     }
 
     .badge{
@@ -94,8 +236,8 @@
       padding: 10px 14px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.25);
-      background: rgba(255,255,255,0.10);
-      font-weight: 600;
+      background: linear-gradient(135deg, rgba(229,57,53,0.22), rgba(255,77,141,0.16));
+      font-weight: 700;
       letter-spacing: 0.2px;
     }
 
@@ -105,6 +247,19 @@
       line-height: 1.05;
       letter-spacing: -0.8px;
       text-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    }
+
+    .pulse-heart{
+      display: inline-block;
+      margin-left: 6px;
+      animation: pulse 1.6s ease-in-out infinite;
+      transform-origin: center;
+    }
+
+    @keyframes pulse{
+      0%{ transform: scale(1); filter: drop-shadow(0 0 0 rgba(229,57,53,0.0)); }
+      50%{ transform: scale(1.25); filter: drop-shadow(0 0 12px rgba(229,57,53,0.6)); }
+      100%{ transform: scale(1); filter: drop-shadow(0 0 0 rgba(229,57,53,0.0)); }
     }
 
     .subtitle{
@@ -144,16 +299,16 @@
     .btn{
       appearance: none;
       border: 1px solid rgba(255,255,255,0.28);
-      background: rgba(255,255,255,0.10);
+      background: linear-gradient(135deg, rgba(229,57,53,0.22), rgba(255,176,124,0.12));
       color: white;
       padding: 10px 14px;
       border-radius: 12px;
       cursor: pointer;
-      font-weight: 650;
+      font-weight: 700;
       transition: transform .12s ease, background .12s ease;
       user-select: none;
     }
-    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.16); }
+    .btn:hover{ transform: translateY(-1px); background: linear-gradient(135deg, rgba(255,77,141,0.22), rgba(255,176,124,0.16)); }
     .btn:active{ transform: translateY(0px); }
 
     .footer{
@@ -170,27 +325,37 @@
 </head>
 
 <body>
-  <!-- Confetti layer -->
-  <div class="confetti" id="confetti"></div>
+  <!-- Background confetti (runs continuously) -->
+  <div class="confetti-bg" id="bgConfetti" aria-hidden="true"></div>
+
+  <!-- Confetti burst (injected on click) -->
+  <div class="confetti" id="confetti" aria-hidden="true"></div>
 
   <main class="wrap">
     <section class="card">
       <div class="topline">
-        <div class="badge">🎂 Happy Birthday <span style="opacity:.9;">•</span> Tsitsi</div>
-        <button class="btn" id="toggleConfetti">Pause confetti</button>
+        <div class="badge">🎂 Happy Birthday 🥂</div>
+        <div class="confetti-cta">
+          <span class="hint" id="confettiHint">Try me →</span>
+          <button class="btn" id="popConfetti" type="button">Pop confetti</button>
+        </div>
       </div>
 
-      <h1 class="title">To Tsitsi ✨</h1>
+      <div class="content">
+        <div>
+          <h1 class="title">Tsitsi Dearest <span class="pulse-heart">❤️</span></h1>
 
-      <p class="subtitle">
-        Today is all about celebrating you — your beauty, your heart, and the way you light up every room.
+            <p class="subtitle" style="margin-top: 18px;">
+        Today is all about celebrating you! Your life, your heart, your beauty… and the way you light up every room.
       </p>
 
       <div class="message">
         Wishing you a day filled with love, laughter, and unforgettable moments.  
         May this new year bring you big wins, peaceful days, and everything you’ve been praying for.
         <br /><br />
-        Stay shining, stay blessed, and keep being you. 💛
+        Thank you for always being there.
+        <br /><br />
+        Stay shining, stay blessed, and keep being you. 🌠
       </div>
 
       <div class="from">
@@ -198,41 +363,106 @@
           <div style="opacity:.8;">With love,</div>
           <div class="signature">Tatenda</div>
         </div>
-        <div class="footer">Made with ❤️ for Tsitsi’s birthday</div>
+        
+      </div>
+        </div>
+
+        <div class="portrait-wrap" aria-hidden="true">
+          <!-- Primary cut-out portrait -->
+          <img class="portrait" src="https://raw.githubusercontent.com/Tayte23/HappyBirthdayTsitsi/main/bdae1.JPG" alt="Tsitsi" />
+
+          <!-- Secondary image (e.g. graduation / milestone photo)
+               Replace the src below with the RAW GitHub URL once uploaded -->
+          
+        </div>
       </div>
     </section>
   </main>
 
   <script>
-    // Build confetti
-    const confetti = document.getElementById("confetti");
-    const colors = ["#FFD166", "#EF476F", "#06D6A0", "#118AB2", "#F78C6B", "#CDB4DB", "#FFAFCC", "#BDE0FE"];
-    const COUNT = 55;
+    // Palette
+    const colors = [
+      "#E53935", // red
+      "#B71C1C", // deep red
+      "#FF4D8D", // pink
+      "#FF7AAE", // rose
+      "#FFB07C", // peach
+      "#2E7D32", // leafy green
+      "#FFFFFF"  // sparkle
+    ];
 
     function rand(min, max){ return Math.random() * (max - min) + min; }
 
-    for(let i=0;i<COUNT;i++){
-      const d = document.createElement("div");
-      d.className = "dot";
-      const size = rand(6, 14);
-      d.style.width = size + "px";
-      d.style.height = size + "px";
-      d.style.left = rand(0, 100) + "vw";
-      d.style.top = rand(-30, 0) + "vh";
-      d.style.background = colors[Math.floor(Math.random() * colors.length)];
-      d.style.animationDuration = rand(4.5, 10) + "s";
-      d.style.animationDelay = rand(0, 3) + "s";
-      d.style.opacity = rand(0.6, 1);
-      confetti.appendChild(d);
+    // 1) Background confetti (continuous)
+    const bgConfetti = document.getElementById("bgConfetti");
+    function buildBackgroundConfetti(){
+      bgConfetti.innerHTML = "";
+      const COUNT = 55;
+      for(let i=0;i<COUNT;i++){
+        const d = document.createElement("div");
+        d.className = "bg-dot";
+        const size = rand(6, 12);
+        d.style.setProperty("--s", size + "px");
+        d.style.setProperty("--x", rand(0, 100) + "vw");
+        d.style.setProperty("--y", rand(-40, 10) + "vh");
+        d.style.setProperty("--d", rand(7, 14) + "s");
+        d.style.setProperty("--o", rand(0.35, 0.9));
+        d.style.setProperty("--drift", rand(-40, 40) + "px");
+        d.style.setProperty("--c", colors[Math.floor(Math.random() * colors.length)]);
+        d.style.animationDelay = rand(0, 6) + "s";
+        bgConfetti.appendChild(d);
+      }
+    }
+    buildBackgroundConfetti();
+    window.addEventListener("resize", () => buildBackgroundConfetti());
+
+    // 2) Burst confetti (on click)
+    const confetti = document.getElementById("confetti");
+    const btn = document.getElementById("popConfetti");
+    const hint = document.getElementById("confettiHint");
+
+    function burstConfetti(){
+      confetti.innerHTML = "";
+
+      // Huge, chaotic burst
+      const pieces = 280;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+
+      for(let i=0;i<pieces;i++){
+        const p = document.createElement("div");
+        p.className = "confetti-piece";
+
+        // Start from the top area (so it feels like a celebration shower)
+        const x = rand(0, vw);
+        const y = rand(0, vh * 0.35);
+
+        const dx = rand(-300, 300);
+        const dy = rand(-240, 320);
+
+        const size = rand(6, 15);
+        const isSquare = Math.random() < 0.4;
+
+        p.style.setProperty("--x", x + "px");
+        p.style.setProperty("--y", y + "px");
+        p.style.setProperty("--dx", dx + "px");
+        p.style.setProperty("--dy", dy + "px");
+        p.style.setProperty("--s", size + "px");
+        p.style.setProperty("--r", isSquare ? "6px" : "999px");
+        p.style.setProperty("--c", colors[Math.floor(Math.random() * colors.length)]);
+
+        p.style.animationDelay = rand(0, 200) + "ms";
+        p.style.animationDuration = rand(900, 1500) + "ms";
+
+        confetti.appendChild(p);
+      }
+
+      setTimeout(() => { confetti.innerHTML = ""; }, 1900);
     }
 
-    // Toggle confetti animation
-    let running = true;
-    const btn = document.getElementById("toggleConfetti");
     btn.addEventListener("click", () => {
-      running = !running;
-      confetti.style.display = running ? "block" : "none";
-      btn.textContent = running ? "Pause confetti" : "Play confetti";
+      burstConfetti();
+      hint.textContent = "Well Deserved!!!";
     });
   </script>
 </body>
