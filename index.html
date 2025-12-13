@@ -159,7 +159,29 @@
     }
 
     @media (max-width: 780px){
-      .content{ grid-template-columns: 1fr; }
+      .content{ 
+        grid-template-columns: 1fr; 
+      }
+
+      /* Move image directly under title on mobile */
+      .portrait-wrap{
+        order: -1;
+        margin-bottom: 16px;
+      }
+
+      .portrait{ 
+        width: min(340px, 92vw); 
+        margin-bottom: 8px;
+      }
+
+      .confetti-cta{
+        position: static;
+        transform: none;
+        width: 100%;
+        justify-content: center;
+        margin-top: 10px;
+      }
+    }
       .portrait{ width: min(320px, 82vw); }
     }
 
